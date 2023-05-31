@@ -1,0 +1,31 @@
+server:
+   port: 8762
+
+spring:
+  cloud:
+    gateway:
+      default-filters: AuthenticationFilter
+      globalcors:
+        corsConfigurations:
+          "[/**]":
+            allowedOriginPatterns: "*"
+            allowCredentials: true
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**
+        - id: calculator
+          uri: lb://calculator
+          predicates:
+            - Path=/calculator/**
+        - id: manager
+          uri: lb://manager
+          predicates:
+            - Path=/manager/**
